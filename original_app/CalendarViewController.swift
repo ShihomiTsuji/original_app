@@ -23,7 +23,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         
         //翌月に移動ボタンを配置
         let calendarFrame = calendar.frame
-        nextButton = UIButton(frame: CGRect(x: calendarFrame.minX+280, y: calendarFrame.minY-10, width: 20, height: 20))
+        nextButton = UIButton(frame: CGRect(x: calendarFrame.maxX-120, y: calendarFrame.minY-10, width: 20, height: 20))
         self.nextButton.setTitle("＞", for: .normal)
         self.nextButton.setTitleColor(UIColor.red, for: .normal)
         self.view.addSubview(nextButton)

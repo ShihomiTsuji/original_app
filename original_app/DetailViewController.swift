@@ -9,7 +9,8 @@ import UIKit
 
 class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var tableView: UITableView!
-
+    @IBOutlet weak var addButton: UIButton!
+    
     
     
     var header = [String]()
@@ -35,6 +36,10 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         tableView.delegate = self
         tableView.dataSource = self
+        
+        addButton.imageView?.contentMode = .scaleAspectFit
+        addButton.contentHorizontalAlignment = .fill
+        addButton.contentVerticalAlignment = .fill
     }
     
     //出社・在宅のセクション数
@@ -58,6 +63,8 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         cell.textLabel?.text = member[indexPath.section][indexPath.row]
         return cell
     }
+    
+
     
     //戻るボタン押下時
     @IBAction func backTapped(_ sender: Any) {
