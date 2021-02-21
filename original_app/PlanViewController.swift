@@ -27,7 +27,7 @@ class PlanViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        5
+        14
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -44,17 +44,24 @@ class PlanViewController: UIViewController, UITableViewDataSource, UITableViewDe
             //セルを取得してデータを格納
             let indexPath = IndexPath(index: i)
             let cell = self.tableView.cellForRow(at: indexPath) as! PlanTableViewCell
-            let plan = cell.getPlanData()
+            let planData = cell.getPlanData()
             
-            //"name": planData.name!
+            //FireStoreに投稿データを保存する
+            let planDic = [
+                "date": planData.date!,
+                "name": planData.name!,
+                "attendance": planData.attendance,
+                "startTime": planData.startTime,
+                "endTime": planData.endTime,
+                "attendReason": planData.attendReason
+            ] as [String : Any]
             
             //予定データの保存場所
-            //let planRef = Firestore.firestore().collection(Const.PlanPath).document()
+            let planRef = Firestore.firestore().collection(Const.PlanPath).document()
+            planRef.setData(planDic)
             
-            //予定データのセット
-            //let planDic = [
-            
-            //]
+            //保存後画面を閉じる
+            dismiss(animated: true, completion: nil)
         }
         
     }

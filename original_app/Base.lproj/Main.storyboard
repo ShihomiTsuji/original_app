@@ -9,7 +9,63 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Calendar View Controller-->
+        <!--Login View Controller-->
+        <scene sceneID="WAr-6x-HGy">
+            <objects>
+                <viewController storyboardIdentifier="Login" modalPresentationStyle="fullScreen" id="FRe-m2-jrN" customClass="LoginViewController" customModule="original_app" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="dh1-wz-iaQ">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="メールアドレス" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aQ8-bH-Z3y">
+                                <rect key="frame" x="159" y="95" width="97" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="パスワード" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="LYR-0x-cKX">
+                                <rect key="frame" x="159" y="154" width="97" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="アカウント作成時は表示名" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gFE-sj-e98">
+                                <rect key="frame" x="159" y="210" width="97" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="89b-vk-kTD">
+                                <rect key="frame" x="176" y="281" width="62" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="ログイン"/>
+                                <connections>
+                                    <action selector="handleLoginButton:" destination="FRe-m2-jrN" eventType="touchUpInside" id="Dzy-4v-EW2"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aQH-Fg-2T3">
+                                <rect key="frame" x="153" y="331" width="108" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="アカウント作成"/>
+                                <connections>
+                                    <action selector="handleCreateAccountButton:" destination="FRe-m2-jrN" eventType="touchUpInside" id="sEO-XO-Quf"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="7RS-NM-iP6"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <connections>
+                        <outlet property="displayNameTextField" destination="gFE-sj-e98" id="14V-lN-JGl"/>
+                        <outlet property="mailAddressTextField" destination="aQ8-bH-Z3y" id="HxA-8s-aN7"/>
+                        <outlet property="passwordTextField" destination="LYR-0x-cKX" id="XdB-r9-jTY"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="BkG-j9-tVY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="363.768115942029" y="101.78571428571428"/>
+        </scene>
+        <!--Calendar-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController storyboardIdentifier="Calendar" id="BYZ-38-t0r" customClass="CalendarViewController" customModule="original_app" customModuleProvider="target" sceneMemberID="viewController">
@@ -42,13 +98,14 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="YCl-CL-lrX" secondAttribute="trailing" id="pOY-KP-6dI"/>
                         </constraints>
                     </view>
+                    <tabBarItem key="tabBarItem" title="Calendar" id="hGh-tU-5NT"/>
                     <connections>
                         <outlet property="calendar" destination="YCl-CL-lrX" id="Omd-ep-KMb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="198.55072463768118" y="79.6875"/>
+            <point key="canvasLocation" x="-2178" y="827"/>
         </scene>
         <!--Detail View Controller-->
         <scene sceneID="isz-6v-E2M">
@@ -126,12 +183,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="M6L-6g-S6N" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1121.7391304347827" y="80.357142857142847"/>
+            <point key="canvasLocation" x="-1433" y="918"/>
         </scene>
         <!--Plan View Controller-->
         <scene sceneID="coU-uf-diK">
             <objects>
-                <viewController id="t9y-lN-0d5" customClass="PlanViewController" customModule="original_app" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Plan" id="t9y-lN-0d5" customClass="PlanViewController" customModule="original_app" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="yE3-lg-nQc">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -171,7 +228,73 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="U4s-Uy-pbE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1852" y="90"/>
+            <point key="canvasLocation" x="-659" y="917"/>
+        </scene>
+        <!--Record-->
+        <scene sceneID="jXi-i4-3v7">
+            <objects>
+                <viewController storyboardIdentifier="Record" id="gNg-HP-WRB" customClass="RecordViewController" customModule="original_app" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="lj4-wc-K1c">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Dfg-re-MSz">
+                                <rect key="frame" x="0.0" y="144" width="414" height="500"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="500" id="Hvv-Eu-nPL"/>
+                                </constraints>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="C9g-Pv-FYA"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="C9g-Pv-FYA" firstAttribute="trailing" secondItem="Dfg-re-MSz" secondAttribute="trailing" id="Ced-vl-CkO"/>
+                            <constraint firstItem="Dfg-re-MSz" firstAttribute="leading" secondItem="C9g-Pv-FYA" secondAttribute="leading" id="e9I-GD-ira"/>
+                            <constraint firstItem="Dfg-re-MSz" firstAttribute="top" secondItem="C9g-Pv-FYA" secondAttribute="top" constant="100" id="m4N-G5-PfG"/>
+                        </constraints>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Record" id="rnr-vz-6is"/>
+                    <connections>
+                        <outlet property="tableView" destination="Dfg-re-MSz" id="Xpq-7Q-RvP"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KDs-pi-Dae" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="81" y="826"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="2Wh-rY-N61">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XTw-xW-oh5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <viewController id="iBt-2a-kzs" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="LgQ-UM-akA">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="P6x-ov-qdG"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="2425" y="728"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="k1k-wm-EB7">
+            <objects>
+                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="eCQ-HD-Uzt" customClass="TabBarController" customModule="original_app" customModuleProvider="target" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="0l6-02-23E">
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="RLA-h4-zUA"/>
+                        <segue destination="gNg-HP-WRB" kind="relationship" relationship="viewControllers" id="ZiJ-rm-TDX"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="J8N-mx-fwP" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1207.2463768115942" y="99.776785714285708"/>
         </scene>
     </scenes>
     <resources>
