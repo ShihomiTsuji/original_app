@@ -8,7 +8,7 @@
 import UIKit
 import Firebase
 
-struct PlanData {
+class PlanData {
     var id: String?
     var date: Date?
     var name: String?
@@ -25,7 +25,7 @@ struct PlanData {
         let timestampDate = document["date"] as? Timestamp
         self.date = timestampDate?.dateValue()
         
-        self.name = planDic["name"] as? String
+        //self.name = planDic["name"] as? String
         
         self.attendance = planDic["attendance"] as? String
         
@@ -45,7 +45,7 @@ struct PlanData {
         let date: Date = Date()
         self.date = date
         
-        self.name = ""
+        //self.name = ""
         
         self.attendance = ""
         

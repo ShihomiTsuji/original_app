@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="eCQ-HD-Uzt">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
@@ -148,15 +148,18 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tj6-Ga-Htc">
-                                <rect key="frame" x="339" y="54" width="45" height="45"/>
+                                <rect key="frame" x="364" y="64" width="20" height="20"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="45" id="3Oc-k3-c7s"/>
-                                    <constraint firstAttribute="height" constant="45" id="6cz-ep-qUM"/>
+                                    <constraint firstAttribute="width" constant="20" id="3Oc-k3-c7s"/>
+                                    <constraint firstAttribute="height" constant="20" id="6cz-ep-qUM"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <state key="normal">
                                     <imageReference key="image" image="plus.circle" catalog="system" symbolScale="large"/>
                                 </state>
+                                <connections>
+                                    <segue destination="t9y-lN-0d5" kind="show" id="yWy-aB-eYd"/>
+                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="2a9-Ic-dVA"/>
@@ -173,7 +176,7 @@
                             <constraint firstItem="2a9-Ic-dVA" firstAttribute="trailing" secondItem="WGw-EG-pHp" secondAttribute="trailing" id="eJ7-i9-8eQ"/>
                             <constraint firstItem="ypr-rI-icS" firstAttribute="leading" secondItem="2a9-Ic-dVA" secondAttribute="leading" constant="20" id="fh3-26-BmZ"/>
                             <constraint firstItem="vQU-8G-Qfz" firstAttribute="top" secondItem="2a9-Ic-dVA" secondAttribute="top" id="kFl-uF-LVl"/>
-                            <constraint firstItem="Tj6-Ga-Htc" firstAttribute="top" secondItem="2a9-Ic-dVA" secondAttribute="top" constant="10" id="yqR-gj-Ygc"/>
+                            <constraint firstItem="Tj6-Ga-Htc" firstAttribute="top" secondItem="2a9-Ic-dVA" secondAttribute="top" constant="20" id="yqR-gj-Ygc"/>
                         </constraints>
                     </view>
                     <connections>
@@ -183,26 +186,26 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="M6L-6g-S6N" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1433" y="918"/>
+            <point key="canvasLocation" x="-1433.3333333333335" y="917.41071428571422"/>
         </scene>
         <!--Plan View Controller-->
         <scene sceneID="coU-uf-diK">
             <objects>
-                <viewController storyboardIdentifier="Plan" id="t9y-lN-0d5" customClass="PlanViewController" customModule="original_app" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Plan" modalPresentationStyle="fullScreen" id="t9y-lN-0d5" customClass="PlanViewController" customModule="original_app" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="yE3-lg-nQc">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="778-fN-nDz">
-                                <rect key="frame" x="0.0" y="144" width="414" height="518"/>
+                                <rect key="frame" x="0.0" y="94" width="414" height="707"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0pv-zW-wVh">
-                                <rect key="frame" x="20" y="772" width="374" height="70"/>
+                                <rect key="frame" x="20" y="812" width="374" height="45"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="70" id="xRQ-Hk-sqp"/>
+                                    <constraint firstAttribute="height" constant="45" id="xRQ-Hk-sqp"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                 <state key="normal" title="決定"/>
                                 <connections>
                                     <action selector="handleRecordButton:" destination="t9y-lN-0d5" eventType="touchUpInside" id="sbY-Hy-aoQ"/>
@@ -212,12 +215,12 @@
                         <viewLayoutGuide key="safeArea" id="6JO-4u-lz5"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="6JO-4u-lz5" firstAttribute="bottom" secondItem="0pv-zW-wVh" secondAttribute="bottom" constant="20" id="GuZ-Py-55I"/>
+                            <constraint firstItem="6JO-4u-lz5" firstAttribute="bottom" secondItem="0pv-zW-wVh" secondAttribute="bottom" constant="5" id="GuZ-Py-55I"/>
                             <constraint firstItem="6JO-4u-lz5" firstAttribute="trailing" secondItem="0pv-zW-wVh" secondAttribute="trailing" constant="20" id="Rgx-2b-eBj"/>
-                            <constraint firstItem="6JO-4u-lz5" firstAttribute="bottom" secondItem="778-fN-nDz" secondAttribute="bottom" constant="200" id="cYG-Qe-u5z"/>
+                            <constraint firstAttribute="bottom" secondItem="778-fN-nDz" secondAttribute="bottom" constant="95" id="cYG-Qe-u5z"/>
                             <constraint firstItem="0pv-zW-wVh" firstAttribute="leading" secondItem="6JO-4u-lz5" secondAttribute="leading" constant="20" id="kHE-7h-QnW"/>
-                            <constraint firstItem="6JO-4u-lz5" firstAttribute="trailing" secondItem="778-fN-nDz" secondAttribute="trailing" id="pEw-E4-LYE"/>
-                            <constraint firstItem="778-fN-nDz" firstAttribute="top" secondItem="6JO-4u-lz5" secondAttribute="top" constant="100" id="vta-U3-E5D"/>
+                            <constraint firstAttribute="trailing" secondItem="778-fN-nDz" secondAttribute="trailing" id="pEw-E4-LYE"/>
+                            <constraint firstItem="778-fN-nDz" firstAttribute="top" secondItem="6JO-4u-lz5" secondAttribute="top" constant="50" id="vta-U3-E5D"/>
                             <constraint firstItem="778-fN-nDz" firstAttribute="leading" secondItem="6JO-4u-lz5" secondAttribute="leading" id="wPw-ar-KBJ"/>
                         </constraints>
                     </view>
@@ -228,7 +231,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="U4s-Uy-pbE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-659" y="917"/>
+            <point key="canvasLocation" x="-659.4202898550725" y="916.74107142857133"/>
         </scene>
         <!--Record-->
         <scene sceneID="jXi-i4-3v7">
@@ -266,7 +269,6 @@
         <!--View Controller-->
         <scene sceneID="2Wh-rY-N61">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="XTw-xW-oh5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <viewController id="iBt-2a-kzs" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="LgQ-UM-akA">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
@@ -275,6 +277,7 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XTw-xW-oh5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2425" y="728"/>
         </scene>
@@ -284,6 +287,7 @@
                 <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="eCQ-HD-Uzt" customClass="TabBarController" customModule="original_app" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="0l6-02-23E">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>

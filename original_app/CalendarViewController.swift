@@ -63,10 +63,13 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     
     //詳細表示画面に遷移
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        let detailViewController = storyboard!.instantiateViewController(identifier: "Detail")
-        present(detailViewController, animated: true)
+        let detailViewController = storyboard!.instantiateViewController(withIdentifier: "Detail") as! DetailViewController
+        detailViewController.selectDate = date
+        self.present(detailViewController, animated: true)
     
     }
+    
+
 
 
     

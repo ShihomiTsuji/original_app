@@ -11,7 +11,7 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var addButton: UIButton!
     
-    
+    var selectDate: Date!
     
     var header = [String]()
     var member = [[String]]()
@@ -64,7 +64,11 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         return cell
     }
     
-
+    //予定画面に選択した日付を渡す
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let planView = segue.destination as! PlanViewController
+        planView.selectDate = self.selectDate
+    }
     
     //戻るボタン押下時
     @IBAction func backTapped(_ sender: Any) {

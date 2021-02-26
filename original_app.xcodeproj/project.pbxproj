@@ -21,7 +21,7 @@
 		524EDD2F25D90E19005D210B /* PlanData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524EDD2E25D90E19005D210B /* PlanData.swift */; };
 		524EDD3425D97342005D210B /* PlanTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524EDD3225D97342005D210B /* PlanTableViewCell.swift */; };
 		524EDD3525D97342005D210B /* PlanTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 524EDD3325D97342005D210B /* PlanTableViewCell.xib */; };
-		524EDD3825DBE6A0005D210B /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524EDD3725DBE6A0005D210B /* File.swift */; };
+		524EDD3825DBE6A0005D210B /* Const.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524EDD3725DBE6A0005D210B /* Const.swift */; };
 		524EDD3B25E0AF49005D210B /* RecordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524EDD3A25E0AF49005D210B /* RecordViewController.swift */; };
 		524EDD3E25E0D75C005D210B /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524EDD3D25E0D75C005D210B /* LoginViewController.swift */; };
 		524EDD4225E0DA56005D210B /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524EDD4125E0DA56005D210B /* TabBarController.swift */; };
@@ -47,7 +47,7 @@
 		524EDD2E25D90E19005D210B /* PlanData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanData.swift; sourceTree = "<group>"; };
 		524EDD3225D97342005D210B /* PlanTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanTableViewCell.swift; sourceTree = "<group>"; };
 		524EDD3325D97342005D210B /* PlanTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlanTableViewCell.xib; sourceTree = "<group>"; };
-		524EDD3725DBE6A0005D210B /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		524EDD3725DBE6A0005D210B /* Const.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Const.swift; sourceTree = "<group>"; };
 		524EDD3A25E0AF49005D210B /* RecordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordViewController.swift; sourceTree = "<group>"; };
 		524EDD3D25E0D75C005D210B /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		524EDD4125E0DA56005D210B /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
@@ -107,18 +107,18 @@
 				524EDCB925D3D76B005D210B /* AppDelegate.swift */,
 				524EDCBB25D3D76B005D210B /* SceneDelegate.swift */,
 				524EDCBF25D3D76B005D210B /* Main.storyboard */,
+				524EDD3D25E0D75C005D210B /* LoginViewController.swift */,
+				524EDD4125E0DA56005D210B /* TabBarController.swift */,
+				524EDCD225D4C6A0005D210B /* CalendarViewController.swift */,
+				524EDCD825D4E4D1005D210B /* DetailViewController.swift */,
 				524EDCF825D5647B005D210B /* RecordTableViewCell.swift */,
 				524EDD3A25E0AF49005D210B /* RecordViewController.swift */,
 				524EDCF925D5647B005D210B /* RecordTableViewCell.xib */,
 				524EDCF525D523CB005D210B /* PlanViewController.swift */,
-				524EDD4125E0DA56005D210B /* TabBarController.swift */,
-				524EDD3D25E0D75C005D210B /* LoginViewController.swift */,
 				524EDD3225D97342005D210B /* PlanTableViewCell.swift */,
 				524EDD3325D97342005D210B /* PlanTableViewCell.xib */,
 				524EDD2E25D90E19005D210B /* PlanData.swift */,
-				524EDCD825D4E4D1005D210B /* DetailViewController.swift */,
-				524EDD3725DBE6A0005D210B /* File.swift */,
-				524EDCD225D4C6A0005D210B /* CalendarViewController.swift */,
+				524EDD3725DBE6A0005D210B /* Const.swift */,
 				524EDCC225D3D76C005D210B /* Assets.xcassets */,
 				524EDCC425D3D76C005D210B /* LaunchScreen.storyboard */,
 				524EDCC725D3D76C005D210B /* Info.plist */,
@@ -250,7 +250,7 @@
 				524EDCD925D4E4D1005D210B /* DetailViewController.swift in Sources */,
 				524EDCBA25D3D76B005D210B /* AppDelegate.swift in Sources */,
 				524EDD3B25E0AF49005D210B /* RecordViewController.swift in Sources */,
-				524EDD3825DBE6A0005D210B /* File.swift in Sources */,
+				524EDD3825DBE6A0005D210B /* Const.swift in Sources */,
 				524EDCBC25D3D76B005D210B /* SceneDelegate.swift in Sources */,
 				524EDD2F25D90E19005D210B /* PlanData.swift in Sources */,
 				524EDD4225E0DA56005D210B /* TabBarController.swift in Sources */,

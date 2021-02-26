@@ -15,7 +15,6 @@ class PlanTableViewCell: UITableViewCell {
     @IBOutlet weak var endTimePicker: UIDatePicker!
     @IBOutlet weak var reasonTextField: UITextField!
     
-
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -30,14 +29,21 @@ class PlanTableViewCell: UITableViewCell {
     //PlanDataの内容をセルに表示 　※要修正
     func setPlanData(_ planData: PlanData) {
         //日付の表示
-        self.dateLabel.text = "\(planData.date!)"
+        let formatter = DateFormatter()
+        let date = planData.date!
+        formatter.dateFormat = "yyyy/MM/dd"
+        let dateString = formatter.string(from: date)
+        self.dateLabel.text = dateString
+        
+        self.endTimePicker.date = planData.date!
+        self.startTimePicker.date = planData.date!
         
     }
     
     //cellに入力されている内容を取得
     func getPlanData() -> PlanData {
         //空のplanDataを作成
-        var planData = PlanData()
+        let planData = PlanData()
         
         //値を設定
         //dateの値設定

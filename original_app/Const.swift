@@ -8,6 +8,5 @@
 import Foundation
 
 struct Const {
-    static let PlanPath = "plan"
-    static let RecordPath = "record"
+    static let userPath = "users"
 }
