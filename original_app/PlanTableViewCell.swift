@@ -49,7 +49,7 @@ class PlanTableViewCell: UITableViewCell {
         //dateの値設定
         let formatter = DateFormatter()
         let dateString = dateLabel.text!
-        formatter.dateFormat = "yyyy/mm/dd"
+        formatter.dateFormat = "yyyy/MM/dd"
         let date = formatter.date(from: dateString)
         planData.date = date
         

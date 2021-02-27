@@ -25,7 +25,7 @@ class PlanData {
         let timestampDate = document["date"] as? Timestamp
         self.date = timestampDate?.dateValue()
         
-        //self.name = planDic["name"] as? String
+        self.name = planDic["name"] as? String
         
         self.attendance = planDic["attendance"] as? String
         

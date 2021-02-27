@@ -28,28 +28,6 @@ class PlanViewController: UIViewController, UITableViewDataSource, UITableViewDe
         tableView.register(nib, forCellReuseIdentifier: "Cell")
     }
     
-    /*override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        print("DEBUG_PRINT: viewWillAppear")
-        
-        if Auth.auth().currentUser != nil {
-            // 自分が登録した予定データを取得
-            let planRef = Firestore.firestore().collection(Const.userPath).document("\(Auth.auth().currentUser?.displayName)").collection("items")
-            planRef.whereField("date", isGreaterThanOrEqualTo: selectDate!)
-                   .whereField("dare", isLessThanOrEqualTo: selectDate!)
-                   .getDocuments {  (snaps, error) in
-                if let error = error {
-                    fatalError("\(error)")
-                }
-                self.planArray = snaps!.documents.map { document in
-                    print("DEBUG_PRINT: document取得 \(document.documentID)")
-                    let planData = PlanData(document: document)
-                    return planData
-                }
-            }
-        }
-    }*/
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         14
     }
@@ -67,8 +45,8 @@ class PlanViewController: UIViewController, UITableViewDataSource, UITableViewDe
         plan.endTime = indexDate
         plan.attendReason = ""
         
-        // 自分が登録した予定データを取得
-        /*let planRef = Firestore.firestore().collection(Const.userPath).document("\(Auth.auth().currentUser?.uid)").collection("items")
+        /*// 自分が登録した予定データを取得
+        let planRef = Firestore.firestore().collection(Const.userPath).document("\(Auth.auth().currentUser?.uid)").collection("items")
         planRef.whereField("date", isEqualTo: indexDate)
                .getDocuments { (querySnapshot, error) in
             if let error = error {
@@ -76,8 +54,7 @@ class PlanViewController: UIViewController, UITableViewDataSource, UITableViewDe
             } else if querySnapshot?.documents != nil {
                 plan = PlanData(document: querySnapshot!.documents[0])
             }
-        }
-        */
+        }*/
         
         cell.setPlanData(plan)
         return cell
@@ -85,15 +62,16 @@ class PlanViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     //決定ボタン押下時のメソッド
     @IBAction func handleRecordButton(_ sender: Any) {
-        for i in 0...13 {
+        for i in 1...6{
             //セルを取得してデータを格納
             let indexPath = IndexPath(row: i, section: 0)
             let cell = self.tableView.cellForRow(at: indexPath) as! PlanTableViewCell
             let planData = cell.getPlanData()
             
             //FireStoreに投稿データを保存する
+            let name = Auth.auth().currentUser?.displayName
             let planDic = [
-                //"name": name!,
+                "name": name!,
                 "date": planData.date!,
                 "attendance": planData.attendance!,
                 "startTime": planData.startTime!,
@@ -102,8 +80,8 @@ class PlanViewController: UIViewController, UITableViewDataSource, UITableViewDe
             ] as [String : Any]
             
             //予定データの保存場所
-            let name = Auth.auth().currentUser?.displayName
-            let planRef = Firestore.firestore().collection(Const.userPath).document(name!).collection("items").document()
+            let uid = Auth.auth().currentUser?.uid
+            let planRef = Firestore.firestore().collection(Const.userPath).document(uid!).collection("items").document()
             planRef.setData(planDic)
             
             //保存後画面を閉じる
