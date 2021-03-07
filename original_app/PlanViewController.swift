@@ -29,7 +29,7 @@ class PlanViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        14
+        7
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -45,16 +45,16 @@ class PlanViewController: UIViewController, UITableViewDataSource, UITableViewDe
         plan.endTime = indexDate
         plan.attendReason = ""
         
-        /*// 自分が登録した予定データを取得
+        // 自分が登録した予定データを取得
         let planRef = Firestore.firestore().collection(Const.userPath).document("\(Auth.auth().currentUser?.uid)").collection("items")
         planRef.whereField("date", isEqualTo: indexDate)
                .getDocuments { (querySnapshot, error) in
             if let error = error {
                 fatalError("\(error)")
-            } else if querySnapshot?.documents != nil {
+            } else if querySnapshot?.documents != nil && !querySnapshot!.documents.isEmpty {
                 plan = PlanData(document: querySnapshot!.documents[0])
             }
-        }*/
+        }
         
         cell.setPlanData(plan)
         return cell
@@ -62,7 +62,7 @@ class PlanViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     //決定ボタン押下時のメソッド
     @IBAction func handleRecordButton(_ sender: Any) {
-        for i in 1...6{
+        for i in 0...6{
             //セルを取得してデータを格納
             let indexPath = IndexPath(row: i, section: 0)
             let cell = self.tableView.cellForRow(at: indexPath) as! PlanTableViewCell
@@ -76,7 +76,8 @@ class PlanViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 "attendance": planData.attendance!,
                 "startTime": planData.startTime!,
                 "endTime": planData.endTime!,
-                "attendReason": planData.attendReason!
+                "attendReason": planData.attendReason!,
+                "healthStatus": planData.healthStatus!
             ] as [String : Any]
             
             //予定データの保存場所
@@ -84,8 +85,51 @@ class PlanViewController: UIViewController, UITableViewDataSource, UITableViewDe
             let planRef = Firestore.firestore().collection(Const.userPath).document(uid!).collection("items").document()
             planRef.setData(planDic)
             
+            //カウントデータ用の情報を取得
+            var companyNum = 0
+            var homeNum = 0
+            
+            if planData.attendance! == "出社" {
+                companyNum = 1
+            } else if planData.attendance! == "在宅" {
+                homeNum = 1
+            }
+            
+            var count = CountData()
+            let countDic = [
+                "date": planData.date!,
+                "companyCount": count.companyCount! + companyNum,
+                "homeCount": count.homeCount! + homeNum
+            ] as [String : Any]
+            
+            let countRef = Firestore.firestore().collection(Const.countPath)
+            
+            countRef.whereField("date", isEqualTo: planData.date!)
+                .getDocuments { (querySnapshot, error) in
+                    if let error = error {
+                        fatalError("\(error)")
+                    } else if querySnapshot?.documents != nil && !querySnapshot!.documents.isEmpty {
+                        count = CountData(document: querySnapshot!.documents[0])
+                        let formatter = DateFormatter()
+                        let date = planData.date!
+                        formatter.dateFormat = "yyyy/MM/dd"
+                        let dateString = formatter.string(from: date)
+                        
+                        let countSaveRef = Firestore.firestore().collection(Const.countPath).document(dateString)
+                        
+                        countSaveRef.updateData([
+                            "companyCout": count.companyCount! + companyNum,
+                            "homeCount": count.homeCount! + homeNum
+                        ])
+                        
+                    } else {
+                        let countSaveRef = Firestore.firestore().collection(Const.countPath).document()
+                        countSaveRef.setData(countDic)
+                    }
+                }
+            
             //保存後画面を閉じる
-            dismiss(animated: true, completion: nil)
+            self.dismiss(animated: true, completion: nil)
         }
         
     }

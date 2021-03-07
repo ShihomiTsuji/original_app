@@ -17,7 +17,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f0P-el-Rfv">
-                        <rect key="frame" x="10" y="10" width="100" height="43"/>
+                        <rect key="frame" x="10" y="5" width="100" height="48"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="100" id="qEi-nC-7qr"/>
                         </constraints>
@@ -32,7 +32,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="eGK-xr-htH">
-                        <rect key="frame" x="348" y="19" width="150" height="26"/>
+                        <rect key="frame" x="348" y="16.5" width="150" height="26"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="25" id="Uxw-Os-yfW"/>
                             <constraint firstAttribute="width" constant="150" id="dr2-HV-0BE"/>
@@ -76,7 +76,7 @@
                     <constraint firstItem="jlS-RY-wV0" firstAttribute="top" secondItem="f0P-el-Rfv" secondAttribute="bottom" constant="10" id="Kya-kG-afy"/>
                     <constraint firstItem="Eof-L6-fWS" firstAttribute="centerY" secondItem="jlS-RY-wV0" secondAttribute="centerY" id="MC4-kQ-lxq"/>
                     <constraint firstAttribute="trailing" secondItem="M7F-Vx-uyD" secondAttribute="trailing" constant="10" id="MyU-iO-Nyg"/>
-                    <constraint firstItem="f0P-el-Rfv" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="Oky-rb-G73"/>
+                    <constraint firstItem="f0P-el-Rfv" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="5" id="Oky-rb-G73"/>
                     <constraint firstItem="jlS-RY-wV0" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="5" id="Sau-7C-x0S"/>
                     <constraint firstItem="bxs-H2-6dK" firstAttribute="leading" secondItem="jlS-RY-wV0" secondAttribute="trailing" constant="3" id="VMq-LD-U0w"/>
                     <constraint firstItem="Eof-L6-fWS" firstAttribute="leading" secondItem="bxs-H2-6dK" secondAttribute="trailing" constant="8" id="bKq-bE-d0z"/>

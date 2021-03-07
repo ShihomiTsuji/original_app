@@ -27,37 +27,13 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         tableView.dataSource = self
         tableView.delegate = self
         
-        
-        
-        tableView.delegate = self
-        tableView.dataSource = self
-        
-        //プラスボタンの設定
-        addButton.imageView?.contentMode = .scaleAspectFit
-        addButton.contentHorizontalAlignment = .fill
-        addButton.contentVerticalAlignment = .fill
-        addButton.tintColor = .white
-        
-        //戻るボタンの設定
-        backButton.layer.borderWidth = 2
-        backButton.layer.cornerRadius = 10
-        backButton.layer.borderColor = CGColor(red: 0.96, green: 0.51, blue: 0.40, alpha: 1.0)
-        
-        //日付表示
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy/MM/dd"
-        let selectDateStr = formatter.string(from: selectDate!)
-        print(selectDateStr)
-        dateLabel.text = "   " + selectDateStr
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
         header = ["出社", "在宅"]
         
         for _ in 0...1 {
             member.append([])
         }
         
+        //for文で全メンバーのデータを取得し、今出社しているメンバーを出社扱いとする。
         let planRef = Firestore.firestore().collection(Const.userPath).document("\(Auth.auth().currentUser?.uid)").collection("items")
         
         //出社しているメンバー
@@ -103,6 +79,27 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 member[1].append(planArray[i])
             }
         }
+        
+        tableView.delegate = self
+        tableView.dataSource = self
+        
+        //プラスボタンの設定
+        addButton.imageView?.contentMode = .scaleAspectFit
+        addButton.contentHorizontalAlignment = .fill
+        addButton.contentVerticalAlignment = .fill
+        addButton.tintColor = .white
+        
+        //戻るボタンの設定
+        backButton.layer.borderWidth = 2
+        backButton.layer.cornerRadius = 10
+        backButton.layer.borderColor = CGColor(red: 0.96, green: 0.51, blue: 0.40, alpha: 1.0)
+        
+        //日付表示
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy/MM/dd"
+        let selectDateStr = formatter.string(from: selectDate!)
+        print(selectDateStr)
+        dateLabel.text = "   " + selectDateStr
     }
     
     //出社・在宅のセクション数

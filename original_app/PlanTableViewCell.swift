@@ -64,6 +64,8 @@ class PlanTableViewCell: UITableViewCell {
         
         planData.attendReason = reasonTextField.text
         
+        planData.healthStatus = "None"
+        
         return planData
     }
     

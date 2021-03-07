@@ -268,29 +268,51 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Dfg-re-MSz">
-                                <rect key="frame" x="0.0" y="144" width="414" height="500"/>
+                                <rect key="frame" x="0.0" y="94" width="414" height="679"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="500" id="Hvv-Eu-nPL"/>
-                                </constraints>
                             </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bvt-WV-TNl">
+                                <rect key="frame" x="5" y="778" width="404" height="30"/>
+                                <state key="normal" title="決定">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="handleRecordButton:" destination="gNg-HP-WRB" eventType="touchUpInside" id="xQY-nX-zUI"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="実績登録" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IGf-Dj-BOl">
+                                <rect key="frame" x="0.0" y="44" width="414" height="50"/>
+                                <color key="backgroundColor" systemColor="systemGrayColor"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="C9g-Pv-FYA"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="C9g-Pv-FYA" firstAttribute="trailing" secondItem="bvt-WV-TNl" secondAttribute="trailing" constant="5" id="0un-Mj-PAw"/>
+                            <constraint firstItem="Dfg-re-MSz" firstAttribute="top" secondItem="IGf-Dj-BOl" secondAttribute="bottom" id="5qd-hL-miX"/>
+                            <constraint firstItem="bvt-WV-TNl" firstAttribute="leading" secondItem="C9g-Pv-FYA" secondAttribute="leading" constant="5" id="8f3-Js-KPE"/>
+                            <constraint firstItem="IGf-Dj-BOl" firstAttribute="leading" secondItem="C9g-Pv-FYA" secondAttribute="leading" id="A4v-dc-zkr"/>
                             <constraint firstItem="C9g-Pv-FYA" firstAttribute="trailing" secondItem="Dfg-re-MSz" secondAttribute="trailing" id="Ced-vl-CkO"/>
+                            <constraint firstItem="C9g-Pv-FYA" firstAttribute="bottom" secondItem="bvt-WV-TNl" secondAttribute="bottom" constant="5" id="Nwd-ae-2fL"/>
+                            <constraint firstItem="Dfg-re-MSz" firstAttribute="top" secondItem="C9g-Pv-FYA" secondAttribute="top" constant="50" id="Rl7-Qo-Wtq"/>
+                            <constraint firstItem="C9g-Pv-FYA" firstAttribute="trailing" secondItem="IGf-Dj-BOl" secondAttribute="trailing" id="Txa-NM-NHb"/>
                             <constraint firstItem="Dfg-re-MSz" firstAttribute="leading" secondItem="C9g-Pv-FYA" secondAttribute="leading" id="e9I-GD-ira"/>
-                            <constraint firstItem="Dfg-re-MSz" firstAttribute="top" secondItem="C9g-Pv-FYA" secondAttribute="top" constant="100" id="m4N-G5-PfG"/>
+                            <constraint firstItem="bvt-WV-TNl" firstAttribute="top" secondItem="Dfg-re-MSz" secondAttribute="bottom" constant="5" id="t7r-0U-gEr"/>
+                            <constraint firstItem="IGf-Dj-BOl" firstAttribute="top" secondItem="C9g-Pv-FYA" secondAttribute="top" id="tOv-gg-Jxk"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Record" image="体温計のアイコン素材 3 (1)" id="rnr-vz-6is"/>
                     <connections>
+                        <outlet property="commitButton" destination="bvt-WV-TNl" id="xYF-hV-RVY"/>
                         <outlet property="tableView" destination="Dfg-re-MSz" id="Xpq-7Q-RvP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KDs-pi-Dae" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="81" y="826"/>
+            <point key="canvasLocation" x="79.710144927536234" y="825.66964285714278"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="2Wh-rY-N61">
@@ -336,6 +358,9 @@
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGrayColor">
+            <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

@@ -21,7 +21,7 @@ class LoginViewController: UIViewController {
             
             Auth.auth().signIn(withEmail: address, password: password) { authResult, error in
                 if let error = error {
-                    ("DEBUG_PRINT: " + error.localizedDescription)
+                print("DEBUG_PRINT: " + error.localizedDescription)
                 }
                 print("DEBUG_PRINT: ログインに成功しました。")
                 

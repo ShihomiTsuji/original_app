@@ -25,6 +25,7 @@
 		524EDD3B25E0AF49005D210B /* RecordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524EDD3A25E0AF49005D210B /* RecordViewController.swift */; };
 		524EDD3E25E0D75C005D210B /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524EDD3D25E0D75C005D210B /* LoginViewController.swift */; };
 		524EDD4225E0DA56005D210B /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524EDD4125E0DA56005D210B /* TabBarController.swift */; };
+		52F5B4E725F304D000655136 /* CountData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52F5B4E625F304CF00655136 /* CountData.swift */; };
 		647471D5870C3055DDE698DA /* Pods_original_app.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F96EBFCA46DC450ED892D98 /* Pods_original_app.framework */; };
 /* End PBXBuildFile section */
 
@@ -51,6 +52,7 @@
 		524EDD3A25E0AF49005D210B /* RecordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordViewController.swift; sourceTree = "<group>"; };
 		524EDD3D25E0D75C005D210B /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		524EDD4125E0DA56005D210B /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		52F5B4E625F304CF00655136 /* CountData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountData.swift; sourceTree = "<group>"; };
 		8CC0688EDC46F700929A9AB9 /* Pods-original_app.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-original_app.release.xcconfig"; path = "Target Support Files/Pods-original_app/Pods-original_app.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -118,6 +120,7 @@
 				524EDD3225D97342005D210B /* PlanTableViewCell.swift */,
 				524EDD3325D97342005D210B /* PlanTableViewCell.xib */,
 				524EDD2E25D90E19005D210B /* PlanData.swift */,
+				52F5B4E625F304CF00655136 /* CountData.swift */,
 				524EDD3725DBE6A0005D210B /* Const.swift */,
 				524EDCC225D3D76C005D210B /* Assets.xcassets */,
 				524EDCC425D3D76C005D210B /* LaunchScreen.storyboard */,
@@ -255,6 +258,7 @@
 				524EDD2F25D90E19005D210B /* PlanData.swift in Sources */,
 				524EDD4225E0DA56005D210B /* TabBarController.swift in Sources */,
 				524EDD3425D97342005D210B /* PlanTableViewCell.swift in Sources */,
+				52F5B4E725F304D000655136 /* CountData.swift in Sources */,
 				524EDCF625D523CB005D210B /* PlanViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

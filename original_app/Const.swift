@@ -9,4 +9,5 @@ import Foundation
 
 struct Const {
     static let userPath = "users"
+    static let countPath = "count"
 }

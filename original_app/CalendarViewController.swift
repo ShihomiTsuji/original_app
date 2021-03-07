@@ -7,6 +7,7 @@
 
 import UIKit
 import FSCalendar
+import Firebase
 
 class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate, FSCalendarDelegateAppearance {
     @IBOutlet weak var calendar: FSCalendar!
@@ -58,7 +59,23 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     
     //各日付に出社率を表示
     func calendar(_ calendar: FSCalendar, subtitleFor date: Date) -> String? {
-        return "aaa"
+        //DetailViewControllerで取得した方法で出社と在宅の日べつのデータを取得し、出社のカウント数を割り算する。
+        //割合を計算するための情報だけを登録しておくための別ドキュメントを用意しておくと良い。
+        var countData = CountData()
+        var percentage: Int = 0
+        
+        let countRef = Firestore.firestore().collection(Const.countPath)
+        
+        countRef.whereField("date", isEqualTo: date)
+            .getDocuments { (querySnapshot, error) in
+                if let error = error {
+                    fatalError("\(error)")
+                } else if querySnapshot?.documents != nil && !querySnapshot!.documents.isEmpty {
+                    countData = CountData(document: querySnapshot!.documents[0])
+                    percentage = countData.companyCount! / (countData.companyCount! + countData.homeCount!)
+                }
+            }
+        return "\(percentage)" + "%"
     }
     
     //詳細表示画面に遷移

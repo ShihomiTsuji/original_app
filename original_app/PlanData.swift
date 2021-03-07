@@ -16,6 +16,7 @@ class PlanData {
     var startTime: Date?
     var endTime: Date?
     var attendReason: String?
+    var healthStatus: String?
     
     init(document: QueryDocumentSnapshot) {
         self.id = document.documentID
@@ -37,6 +38,8 @@ class PlanData {
         
         self.attendReason = planDic["attendReason"] as? String
         
+        self.healthStatus = planDic["healthStatus"] as? String
+        
     }
     
     init() {
@@ -54,6 +57,8 @@ class PlanData {
         self.endTime = date
         
         self.attendReason = ""
+        
+        self.healthStatus = "None"
     }
 
 }
