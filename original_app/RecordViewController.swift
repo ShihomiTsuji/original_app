@@ -26,6 +26,11 @@ class RecordViewController: UIViewController, UITableViewDelegate, UITableViewDa
         //決定ボタンの設定
         commitButton.layer.backgroundColor = CGColor(red: 0.96, green: 0.51, blue: 0.40, alpha: 1.0)
         commitButton.layer.cornerRadius = 5
+        
+        commitButton.layer.shadowColor = UIColor.gray.cgColor
+        commitButton.layer.shadowOpacity = 1 //影の色の透明度
+        commitButton.layer.shadowRadius = 3 //影のぼかし
+        commitButton.layer.shadowOffset = CGSize(width: 2, height: 2)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

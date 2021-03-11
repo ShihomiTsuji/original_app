@@ -32,11 +32,13 @@ class LoginViewController: UIViewController {
         // アドレスとパスワード名のいずれかでも入力されていない時は何もしない
     }
     
+    // アカウント作成ボタンをタップしたときに呼ばれるメソッド
     @IBAction func handleCreateAccountButton(_ sender: Any) {
         if let address = mailAddressTextField.text, let password = passwordTextField.text, let displayName = displayNameTextField.text {
             
             // アドレスとパスワードと表示名のいずれかでも入力されていない時は何もしない
             if address.isEmpty || password.isEmpty || displayName.isEmpty {
+               
                 print("何かが空文字です。")
                 return
             }
@@ -49,23 +51,23 @@ class LoginViewController: UIViewController {
                     return
                 }
                 print("DEBUG_PRINT: ユーザ作成に成功しました。" )
-            }
             
-            // 表示名を設定する
-            let user = Auth.auth().currentUser
-            if let user = user {
-                let changeRequest = user.createProfileChangeRequest()
-                changeRequest.displayName = displayName
-                changeRequest.commitChanges { error in
-                    if let error = error {
-                        // プロフィールの更新でエラーが発生
-                        print("DEBUG_PRINR: " + error.localizedDescription)
-                        return
+                // 表示名を設定する
+                let user = Auth.auth().currentUser
+                if let user = user {
+                    let changeRequest = user.createProfileChangeRequest()
+                    changeRequest.displayName = displayName
+                    changeRequest.commitChanges { error in
+                        if let error = error {
+                            // プロフィールの更新でエラーが発生
+                            print("DEBUG_PRINR: " + error.localizedDescription)
+                            return
+                        }
+                        print ("DEBUG_PRINT: [displayName = \(user.displayName!)]の設定に成功しました。")
+                        
+                        // 画面を閉じてタブ画面に戻る
+                        self.dismiss(animated: true, completion: nil)
                     }
-                    print ("DEBUG_PRINT: [displayName = \(user.displayName!)]の設定に成功しました。")
-                    
-                    // 画面を閉じてタブ画面に戻る
-                    self.dismiss(animated: true, completion: nil)
                 }
             }
         }

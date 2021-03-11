@@ -10,6 +10,8 @@ import Firebase
 
 class PlanViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var commitButton: UIButton!
+    @IBOutlet weak var backButton: UIButton!
     
     var selectDate: Date!
     
@@ -26,6 +28,26 @@ class PlanViewController: UIViewController, UITableViewDataSource, UITableViewDe
         //カスタムセルを登録する
         let nib = UINib(nibName: "PlanTableViewCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "Cell")
+        
+        //決定ボタンの設定
+        commitButton.layer.backgroundColor = CGColor(red: 0.96, green: 0.51, blue: 0.40, alpha: 1.0)
+        commitButton.layer.cornerRadius = 7
+        
+        commitButton.layer.shadowColor = UIColor.gray.cgColor
+        commitButton.layer.shadowOpacity = 1 //影の色の透明度
+        commitButton.layer.shadowRadius = 3 //影のぼかし
+        commitButton.layer.shadowOffset = CGSize(width: 2, height: 2)
+        
+        //戻るボタンの設定
+        backButton.layer.backgroundColor = UIColor.white.cgColor
+        backButton.layer.borderWidth = 2
+        backButton.layer.cornerRadius = 6
+        backButton.layer.borderColor = CGColor(red: 0.96, green: 0.51, blue: 0.40, alpha: 1.0)
+        
+        backButton.layer.shadowColor = UIColor.gray.cgColor
+        backButton.layer.shadowOpacity = 1 //影の色の透明度
+        backButton.layer.shadowRadius = 3 //影のぼかし
+        backButton.layer.shadowOffset = CGSize(width: 2, height: 2)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -82,6 +104,8 @@ class PlanViewController: UIViewController, UITableViewDataSource, UITableViewDe
             
             //予定データの保存場所
             let uid = Auth.auth().currentUser?.uid
+            let userRef = Firestore.firestore().collection(Const.userPath).document(uid!)
+            userRef.setData(["userName": name!])
             let planRef = Firestore.firestore().collection(Const.userPath).document(uid!).collection("items").document()
             planRef.setData(planDic)
             
@@ -132,6 +156,11 @@ class PlanViewController: UIViewController, UITableViewDataSource, UITableViewDe
             self.dismiss(animated: true, completion: nil)
         }
         
+    }
+    
+    //戻るボタン押下時
+    @IBAction func backTapped(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
     }
     
     /*

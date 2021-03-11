@@ -19,6 +19,7 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var header = [String]()
     var member = [[PlanData]]()
     var planArray: [PlanData] = []
+    var planData: PlanData = PlanData()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,30 +35,48 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
         
         //for文で全メンバーのデータを取得し、今出社しているメンバーを出社扱いとする。
-        let planRef = Firestore.firestore().collection(Const.userPath).document("\(Auth.auth().currentUser?.uid)").collection("items")
+        //let members = ["kBPU9J1qlYbJYgXtG02Hqqo8IAv1"]
+        var members = [String]()
         
-        //出社しているメンバー
-        //member[0] = ["aa", "bb", "cc"]
-        planRef.whereField("attendance", isEqualTo: "出社")
-               .whereField("date", isEqualTo: selectDate!)
-               .getDocuments { (querySnapshot, error) in
+        let memberRef = Firestore.firestore().collection(Const.userPath)
+        memberRef.getDocuments() { (querySnapshot, error) in
             if let error = error {
-                fatalError("\(error)")
-            } else if querySnapshot?.documents != nil {
-                self.planArray = querySnapshot!.documents.map { document in
-                    print("DEBUG_PRINT: document取得 \(document.documentID)")
-                    let planData = PlanData(document: document)
-                    return planData
-                    }
+                print(error.localizedDescription)
+            } else {
+                if querySnapshot!.documents .isEmpty{
+                    print("空")
                 }
-            }
-        
-        if planArray.count > 0 {
-            for i in 0...planArray.count - 1 {
-                member[0].append(planArray[i])
+                for document in querySnapshot!.documents {
+                    let name = document.documentID
+                    print(name)
+                    members.append(document.documentID)
+                }
             }
         }
         
+        for userId in members {
+            let planRef = Firestore.firestore().collection(Const.userPath).document("\(userId)").collection("items")
+            
+            //出社しているメンバー
+            planRef.whereField("date", isEqualTo: selectDate!)
+                   .getDocuments { (querySnapshot, error) in
+                if let error = error {
+                    fatalError("\(error)")
+                } else if querySnapshot?.documents != nil {
+                    self.planData = PlanData(document: querySnapshot!.documents[0])
+                    }
+                }
+            
+            if planData.attendance == "出社" {
+                member[0].append(planData)
+            } else if planData.attendance == "在宅"{
+                member[1].append(planData)
+            }
+            
+        }
+        
+        /*
+        //member[0] = ["aa", "bb", "cc"]
         //在宅しているメンバー
         //member[1] = ["cc", "dd", "ee"]
         planRef.whereField("attendance", isEqualTo: "在宅")
@@ -78,7 +97,7 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
             for i in 0...planArray.count - 1 {
                 member[1].append(planArray[i])
             }
-        }
+        } */
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -90,9 +109,16 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         addButton.tintColor = .white
         
         //戻るボタンの設定
+        backButton.layer.backgroundColor = UIColor.white.cgColor
         backButton.layer.borderWidth = 2
         backButton.layer.cornerRadius = 10
         backButton.layer.borderColor = CGColor(red: 0.96, green: 0.51, blue: 0.40, alpha: 1.0)
+        
+        backButton.layer.shadowColor = UIColor.gray.cgColor
+        backButton.layer.shadowOpacity = 1 //影の色の透明度
+        backButton.layer.shadowRadius = 3 //影のぼかし
+        backButton.layer.shadowOffset = CGSize(width: 2, height: 2) //影の方向　width、heightを負の値にすると上の方に影が表示される
+
         
         //日付表示
         let formatter = DateFormatter()
