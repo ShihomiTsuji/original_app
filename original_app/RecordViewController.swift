@@ -12,6 +12,8 @@ class RecordViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var commitButton: UIButton!
     
+    let uid = Auth.auth().currentUser?.uid
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -54,7 +56,7 @@ class RecordViewController: UIViewController, UITableViewDelegate, UITableViewDa
         plan.endTime = indexDate
         plan.attendReason = ""
                 
-        let planRef = Firestore.firestore().collection(Const.userPath).document("\(Auth.auth().currentUser?.uid)").collection("items")
+        let planRef = Firestore.firestore().collection(Const.userPath).document(uid!).collection("items")
             
         planRef.whereField("date", isEqualTo: indexDate)
             .getDocuments {(querySnapshot, error) in

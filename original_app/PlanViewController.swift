@@ -15,8 +15,10 @@ class PlanViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     var selectDate: Date!
     
+    let uid = Auth.auth().currentUser?.uid
+    
     //予定データを格納する配列
-    //var planArray: [PlanData] = []
+    var planArray: [PlanData] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,37 +50,52 @@ class PlanViewController: UIViewController, UITableViewDataSource, UITableViewDe
         backButton.layer.shadowOpacity = 1 //影の色の透明度
         backButton.layer.shadowRadius = 3 //影のぼかし
         backButton.layer.shadowOffset = CGSize(width: 2, height: 2)
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        var plan: PlanData = PlanData()
+        let indexDate = Calendar.current.date(byAdding: .day, value: 0, to: selectDate!)!
+        let timestampDate = Timestamp(date: indexDate)
+        /*plan.date = indexDate
+        plan.startTime = indexDate
+        plan.endTime = indexDate*/
+        
+        // 自分が登録した予定データを取得
+        let planRef = Firestore.firestore().collection(Const.userPath).document(uid!).collection("items")
+        planRef.whereField("date", isEqualTo: timestampDate)
+               .getDocuments() { (querySnapshot, error) in
+            if let error = error {
+                print("DEBUG_PRINT: snapshotの取得が失敗しました。 \(error)")
+                return
+            } else if querySnapshot?.documents != nil && !querySnapshot!.documents.isEmpty {
+                //取得した予定データをplanに代入
+                let dateTimestamp:Timestamp = querySnapshot?.documents[0].get("date") as! Timestamp
+                print("timestamp: \(dateTimestamp)")
+                let dateValue = dateTimestamp.dateValue()
+                print("date: \(dateValue)")
+                plan = PlanData(document: querySnapshot!.documents[0])
+                self.planArray.append(plan)
+            } else {
+                self.planArray.append(plan)
+            }
+        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        7
+        //7
+        1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // 新規登録用データの作成
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! PlanTableViewCell
-                    
-        var plan: PlanData = PlanData()
-        let indexDate = Calendar.current.date(byAdding: .day, value: indexPath.row, to: selectDate!)!
-        plan.id = ""
-        plan.date = indexDate
-        plan.attendance = ""
-        plan.startTime = indexDate
-        plan.endTime = indexDate
-        plan.attendReason = ""
+        print(planArray.count)
         
-        // 自分が登録した予定データを取得
-        let planRef = Firestore.firestore().collection(Const.userPath).document("\(Auth.auth().currentUser?.uid)").collection("items")
-        planRef.whereField("date", isEqualTo: indexDate)
-               .getDocuments { (querySnapshot, error) in
-            if let error = error {
-                fatalError("\(error)")
-            } else if querySnapshot?.documents != nil && !querySnapshot!.documents.isEmpty {
-                plan = PlanData(document: querySnapshot!.documents[0])
-            }
-        }
+        cell.setPlanData(planArray[indexPath.row])
         
-        cell.setPlanData(plan)
         return cell
     }
     
@@ -94,7 +111,7 @@ class PlanViewController: UIViewController, UITableViewDataSource, UITableViewDe
             let name = Auth.auth().currentUser?.displayName
             let planDic = [
                 "name": name!,
-                "date": planData.date!,
+                "date": Timestamp(date: planData.date!), //timestamp型に
                 "attendance": planData.attendance!,
                 "startTime": planData.startTime!,
                 "endTime": planData.endTime!,
@@ -103,7 +120,6 @@ class PlanViewController: UIViewController, UITableViewDataSource, UITableViewDe
             ] as [String : Any]
             
             //予定データの保存場所
-            let uid = Auth.auth().currentUser?.uid
             let userRef = Firestore.firestore().collection(Const.userPath).document(uid!)
             userRef.setData(["userName": name!])
             let planRef = Firestore.firestore().collection(Const.userPath).document(uid!).collection("items").document()

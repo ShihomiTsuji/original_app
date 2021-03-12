@@ -30,10 +30,10 @@ class PlanData {
         
         self.attendance = planDic["attendance"] as? String
         
-        let timestampStart = document["startTime"] as? Timestamp
+        let timestampStart = planDic["startTime"] as? Timestamp
         self.startTime = timestampStart?.dateValue()
         
-        let timestampEnd = document["endTime"] as? Timestamp
+        let timestampEnd = planDic["endTime"] as? Timestamp
         self.endTime = timestampEnd?.dateValue()
         
         self.attendReason = planDic["attendReason"] as? String
