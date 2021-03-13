@@ -104,7 +104,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     
     //各日付に出社率を表示
     func calendar(_ calendar: FSCalendar, subtitleFor date: Date) -> String? {
-        let monthGetter = Calendar.current.dateComponents([Calendar.Component.month, Calendar.Component.year], from: self.calendar.currentPage)
+        /*let monthGetter = Calendar.current.dateComponents([Calendar.Component.month, Calendar.Component.year], from: self.calendar.currentPage)
         let currentMonth = monthGetter.month
         
         if Calendar.current.component(.month, from: date) == currentMonth {
@@ -114,7 +114,8 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
             return "\(percentage)" + "%"
         } else {
             return ""
-        }
+        }*/
+        "aaa"
     }
     
     //詳細表示画面に遷移

@@ -81,12 +81,12 @@ class PlanViewController: UIViewController, UITableViewDataSource, UITableViewDe
             } else {
                 self.planArray.append(plan)
             }
+            self.tableView.reloadData()
         }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //7
-        1
+        7
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -94,7 +94,7 @@ class PlanViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! PlanTableViewCell
         print(planArray.count)
         
-        //cell.setPlanData(planArray[indexPath.row])
+        cell.setPlanData(planArray[indexPath.row])
         
         return cell
     }
