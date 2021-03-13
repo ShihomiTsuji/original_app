@@ -94,7 +94,7 @@ class PlanViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! PlanTableViewCell
         print(planArray.count)
         
-        cell.setPlanData(planArray[indexPath.row])
+        //cell.setPlanData(planArray[indexPath.row])
         
         return cell
     }
