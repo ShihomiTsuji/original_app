@@ -17,6 +17,10 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     
     //カレンダーのsubtitleに表示する出社割合の配列
     var percentageArray:[Int] = []
+    //firebaseから取得したデータ格納用の配列
+    var countArray:[CountData] = []
+    //firestoreのデータ取得が実施済みか確認用の変数
+    var loadedIndex:Int = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,43 +50,44 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        //countDataを取得して、出社人数・在宅人数から出社率を表示する。
-        var countData = CountData()
-        var percentage: Int = 0
-        var percentageDouble: Double = 0.0
-        
-        //表示年月日取得
+        //Firebaseから出社・在宅カウントデータを取得
+        //表示している年月日取得
         let monthGetter = Calendar.current.dateComponents([Calendar.Component.month, Calendar.Component.year], from: self.calendar.currentPage)
         let currentYear = monthGetter.year
         let currentMonth = monthGetter.month
         
+        var startComponents = DateComponents()
+        var endComponents = DateComponents()
+        startComponents.year = currentYear
+        startComponents.month = currentMonth
+        startComponents.day = 1
+        endComponents.year = currentYear
+        endComponents.month = currentMonth! + 1
+        // 日数を0にすることで、前の月の最後の日になる
+        startComponents.day = 0
+        //日付に変換
         let calendar2 = Calendar(identifier: .gregorian)
-        var components = DateComponents()
-        components.year = currentYear
-        components.month = currentMonth
-         
-        let countRef = Firestore.firestore().collection(Const.countPath)
-        
-        for dateNum in Calendar.current.range(of: Calendar.Component.day, in: Calendar.Component.month, for: self.calendar.currentPage)! {
-            //表示月のX日目の日付変数を作成し、firebaseを検索
-            components.day = dateNum
-            let date = calendar2.date(from: components)!
+        let startDate = calendar2.date(from: startComponents)!
+        let endDate = calendar2.date(from: endComponents)!
             
-            countRef.whereField("date", isEqualTo: date)
-                .getDocuments { (querySnapshot, error) in
-                    if let error = error {
-                        print("DEBUG_PRINT: " + error.localizedDescription)
-                    } else if querySnapshot?.documents != nil && !querySnapshot!.documents.isEmpty {
-                        countData = CountData(document: querySnapshot!.documents[0])
-                        let companyCountDouble: Double = Double(countData.companyCount!)
-                        let homeCountDouble: Double = Double(countData.homeCount!)
-                        percentageDouble = homeCountDouble / (companyCountDouble + homeCountDouble) * 100
-                        percentage = Int(percentageDouble)
-                        self.percentageArray.append(percentage)
+        let countRef = Firestore.firestore().collection(Const.countPath)
+                
+        //表示月のcountDataをfirebaseから取得
+        countRef.whereField("date", isGreaterThanOrEqualTo: startDate)
+            .whereField("date", isLessThanOrEqualTo: endDate)
+            .getDocuments { (querySnapshot, error) in
+                if let error = error {
+                    print("DEBUG_PRINT: " + error.localizedDescription)
+                } else if querySnapshot?.documents != nil && !querySnapshot!.documents.isEmpty {
+                    self.countArray = querySnapshot!.documents.map {document in
+                    print("DEBUG_PRINT: document取得 \(document.documentID)")
+                    let countData = CountData(document: document)
+                    self.loadedIndex += 1
+                    return countData
                     }
-                    self.calendar.reloadData()
                 }
-        }
+            self.calendar.reloadData()
+            }
     }
     
     //前月・翌月ボタン押下時の処理
@@ -104,18 +109,54 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     
     //各日付に出社率を表示
     func calendar(_ calendar: FSCalendar, subtitleFor date: Date) -> String? {
-        /*let monthGetter = Calendar.current.dateComponents([Calendar.Component.month, Calendar.Component.year], from: self.calendar.currentPage)
+        //表示している年月日取得
+        let monthGetter = Calendar.current.dateComponents([Calendar.Component.month, Calendar.Component.year], from: self.calendar.currentPage)
+        let currentYear = monthGetter.year
         let currentMonth = monthGetter.month
+        //出社割合表示用の配列percentageArrayを更新
+        var components = DateComponents()
+        components.year = currentYear
+        components.month = currentMonth
         
-        if Calendar.current.component(.month, from: date) == currentMonth {
-            let dateNum = Calendar.current.component(.day, from: date)
-            let percentage = percentageArray[dateNum - 1]
+        let calendar2 = Calendar(identifier: .gregorian)
+        var arrayCount = 0
+        let cal = Calendar.current.range(of: Calendar.Component.day, in: Calendar.Component.month, for: self.calendar.currentPage)!
+        
+        if loadedIndex > 0 {
+            for dateNum in cal {
+                components.day = dateNum
+                let date = calendar2.date(from: components)!
+                
+                if countArray[arrayCount].date == date {
+                    //取得したcountDataから、出社人数・在宅人数から出社率を計算
+                    let countData = countArray[arrayCount]
+                    var percentage: Int = 0
+                    var percentageDouble: Double = 0.0
+                    
+                    let companyCountDouble: Double = Double(countData.companyCount!)
+                    let homeCountDouble: Double = Double(countData.homeCount!)
+                    percentageDouble = companyCountDouble / (companyCountDouble + homeCountDouble) * 100
+                    percentage = Int(percentageDouble)
+                    self.percentageArray.append(percentage)
+                    
+                    arrayCount += 1
+                } else {
+                    self.percentageArray.append(0)
+                }
+            }
             
-            return "\(percentage)" + "%"
+            //表示月の日付のsubtitleにはpercentageを表示
+            if Calendar.current.component(.month, from: date) == currentMonth {
+                let dateNum = Calendar.current.component(.day, from: date)
+                let percentage = percentageArray[dateNum - 1]
+                
+                return "\(percentage)" + "%"
+            } else {
+                return ""
+            }
         } else {
             return ""
-        }*/
-        "aaa"
+        }
     }
     
     //詳細表示画面に遷移
