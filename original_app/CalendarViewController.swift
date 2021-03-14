@@ -21,6 +21,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     var countArray:[CountData] = []
     //firestoreのデータ取得が実施済みか確認用の変数
     var loadedIndex:Int = 0
+    var arrayCount = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,10 +81,10 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
                     print("DEBUG_PRINT: " + error.localizedDescription)
                 } else if querySnapshot?.documents != nil && !querySnapshot!.documents.isEmpty {
                     self.countArray = querySnapshot!.documents.map {document in
-                    print("DEBUG_PRINT: document取得 \(document.documentID)")
-                    let countData = CountData(document: document)
-                    self.loadedIndex += 1
-                    return countData
+                        print("DEBUG_PRINT: document取得 \(document.documentID)")
+                        let countData = CountData(document: document)
+                        self.loadedIndex += 1
+                        return countData
                     }
                 }
             self.calendar.reloadData()
@@ -119,40 +120,25 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         components.month = currentMonth
         
         let calendar2 = Calendar(identifier: .gregorian)
-        var arrayCount = 0
         let cal = Calendar.current.range(of: Calendar.Component.day, in: Calendar.Component.month, for: self.calendar.currentPage)!
         
         if loadedIndex > 0 {
-            for dateNum in cal {
-                components.day = dateNum
-                let date = calendar2.date(from: components)!
-                
-                if countArray[arrayCount].date == date {
-                    //取得したcountDataから、出社人数・在宅人数から出社率を計算
-                    let countData = countArray[arrayCount]
-                    var percentage: Int = 0
-                    var percentageDouble: Double = 0.0
                     
-                    let companyCountDouble: Double = Double(countData.companyCount!)
-                    let homeCountDouble: Double = Double(countData.homeCount!)
-                    percentageDouble = companyCountDouble / (companyCountDouble + homeCountDouble) * 100
-                    percentage = Int(percentageDouble)
-                    self.percentageArray.append(percentage)
+            if countArray.count > arrayCount + 1 && countArray[arrayCount].date == date {
+                //取得したcountDataから、出社人数・在宅人数から出社率を計算
+                let countData = countArray[arrayCount]
+                var percentage: Int = 0
+                var percentageDouble: Double = 0.0
                     
-                    arrayCount += 1
-                } else {
-                    self.percentageArray.append(0)
-                }
-            }
-            
-            //表示月の日付のsubtitleにはpercentageを表示
-            if Calendar.current.component(.month, from: date) == currentMonth {
-                let dateNum = Calendar.current.component(.day, from: date)
-                let percentage = percentageArray[dateNum - 1]
-                
+                let companyCountDouble: Double = Double(countData.companyCount!)
+                let homeCountDouble: Double = Double(countData.homeCount!)
+                percentageDouble = companyCountDouble / (companyCountDouble + homeCountDouble) * 100
+                percentage = Int(percentageDouble)
+                //self.percentageArray.append(percentage)
+                arrayCount += 1
                 return "\(percentage)" + "%"
             } else {
-                return ""
+                return "0%"
             }
         } else {
             return ""

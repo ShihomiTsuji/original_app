@@ -20,6 +20,14 @@ class PlanViewController: UIViewController, UITableViewDataSource, UITableViewDe
     //予定データを格納する配列
     var planArray: [PlanData] = []
     
+    //firebaseから取得したデータ格納用の配列
+    var tempPlanArray:[PlanData] = []
+    
+    var arrayCount = 0
+    
+    //firestoreのデータ取得が実施済みか確認用の変数
+    var loadedIndex:Int = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -56,30 +64,24 @@ class PlanViewController: UIViewController, UITableViewDataSource, UITableViewDe
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        var plan: PlanData = PlanData()
-        let indexDate = Calendar.current.date(byAdding: .day, value: 0, to: selectDate!)!
-        let timestampDate = Timestamp(date: indexDate)
-        /*plan.date = indexDate
-        plan.startTime = indexDate
-        plan.endTime = indexDate*/
-        
+        let startDate = selectDate!
+        let endDate = Calendar.current.date(byAdding: .day, value: 6, to: selectDate!)!
+     
         // 自分が登録した予定データを取得
         let planRef = Firestore.firestore().collection(Const.userPath).document(uid!).collection("items")
-        planRef.whereField("date", isEqualTo: timestampDate)
-               .getDocuments() { (querySnapshot, error) in
-            if let error = error {
+        planRef.whereField("date", isGreaterThanOrEqualTo: startDate)
+            .whereField("date", isLessThanOrEqualTo: endDate)
+            .getDocuments() { (querySnapshot, error) in
+                if let error = error {
                 print("DEBUG_PRINT: snapshotの取得が失敗しました。 \(error)")
                 return
             } else if querySnapshot?.documents != nil && !querySnapshot!.documents.isEmpty {
-                //取得した予定データをplanに代入
-                let dateTimestamp:Timestamp = querySnapshot?.documents[0].get("date") as! Timestamp
-                print("timestamp: \(dateTimestamp)")
-                let dateValue = dateTimestamp.dateValue()
-                print("date: \(dateValue)")
-                plan = PlanData(document: querySnapshot!.documents[0])
-                self.planArray.append(plan)
-            } else {
-                self.planArray.append(plan)
+                self.tempPlanArray = querySnapshot!.documents.map { document in
+                print("DEBUG_PRINT: document取得 \(document.documentID)")
+                let planData = PlanData(document: document)
+                self.loadedIndex += 1
+                return planData
+                }
             }
             self.tableView.reloadData()
         }
@@ -92,10 +94,26 @@ class PlanViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // 新規登録用データの作成
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! PlanTableViewCell
-        print(planArray.count)
+        let plan: PlanData = PlanData()
+        let date = Calendar.current.date(byAdding: .day, value: indexPath.row, to: selectDate!)!
         
-        cell.setPlanData(planArray[indexPath.row])
-        
+        if loadedIndex > 0 {
+            
+            if tempPlanArray[arrayCount].date == date {
+                //planArray.append(tempPlanArray[arrayCount])
+                print(tempPlanArray[arrayCount])
+                cell.setPlanData(tempPlanArray[arrayCount])
+                arrayCount += 1
+            } else {
+                plan.date = date
+                cell.setPlanData(plan)
+            }
+        } else {
+            plan.date = date
+            plan.startTime = date
+            plan.endTime = date
+            cell.setPlanData(plan)
+        }
         return cell
     }
     

@@ -16,6 +16,7 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     var selectDate: Date!
     
+    var members = [String]()
     var header = [String]()
     var member = [[PlanData]]()
     var planArray: [PlanData] = []
@@ -35,29 +36,24 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
         
         //for文で全メンバーのデータを取得し、今出社しているメンバーを出社扱いとする。
-        //let members = ["kBPU9J1qlYbJYgXtG02Hqqo8IAv1"]
-        var members = [String]()
-        
+        //データを登録している社員の一覧を取得
         let memberRef = Firestore.firestore().collection(Const.userPath)
         memberRef.getDocuments() { (querySnapshot, error) in
             if let error = error {
                 print(error.localizedDescription)
             } else {
-                if querySnapshot!.documents .isEmpty{
-                    print("空")
-                }
                 for document in querySnapshot!.documents {
                     let name = document.documentID
                     print(name)
-                    members.append(document.documentID)
+                    self.members.append(document.documentID)
                 }
             }
         }
         
+        //membersに格納されている社員の選択日の勤務予定を取得し、memberに格納
         for userId in members {
             let planRef = Firestore.firestore().collection(Const.userPath).document("\(userId)").collection("items")
             
-            //出社しているメンバー
             planRef.whereField("date", isEqualTo: selectDate!)
                    .getDocuments { (querySnapshot, error) in
                 if let error = error {
@@ -66,38 +62,14 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     self.planData = PlanData(document: querySnapshot!.documents[0])
                     }
                 }
-            
             if planData.attendance == "出社" {
                 member[0].append(planData)
             } else if planData.attendance == "在宅"{
                 member[1].append(planData)
             }
-            
+            self.tableView.reloadData()
         }
         
-        /*
-        //member[0] = ["aa", "bb", "cc"]
-        //在宅しているメンバー
-        //member[1] = ["cc", "dd", "ee"]
-        planRef.whereField("attendance", isEqualTo: "在宅")
-               .whereField("date", isEqualTo: selectDate!)
-               .getDocuments { (querySnapshot, error) in
-            if let error = error {
-                fatalError("\(error)")
-            }
-            self.planArray = querySnapshot!.documents.map { document in
-            print("DEBUG_PRINT: document取得 \(document.documentID)")
-            let planData = PlanData(document: document)
-            print("在宅データあり")
-            return planData
-            }
-        }
-        
-        if planArray.count > 0 {
-            for i in 0...planArray.count - 1 {
-                member[1].append(planArray[i])
-            }
-        } */
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -146,6 +118,7 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
     //各セクションのセル
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        
         //名前表示
         let nameLabel = cell.viewWithTag(1) as! UILabel
         nameLabel.text = (member[indexPath.section][indexPath.row].name)

@@ -26,7 +26,7 @@ class PlanTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    //PlanDataの内容をセルに表示 　※要修正
+    //PlanDataの内容をセルに表示
     func setPlanData(_ planData: PlanData) {
         //日付の表示
         let formatter = DateFormatter()
@@ -35,9 +35,16 @@ class PlanTableViewCell: UITableViewCell {
         let dateString = formatter.string(from: date)
         self.dateLabel.text = dateString
         
+        if planData.attendance == "出社" {
+            self.segmentedControl.selectedSegmentIndex = 1
+        }
+        
         self.endTimePicker.date = planData.date!
         self.startTimePicker.date = planData.date!
         
+        if planData.attendReason != nil {
+            self.reasonTextField.text = planData.attendReason!
+        }
     }
     
     //cellに入力されている内容を取得
