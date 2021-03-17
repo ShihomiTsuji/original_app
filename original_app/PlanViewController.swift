@@ -19,14 +19,19 @@ class PlanViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     //予定データを格納する配列
     var planArray: [PlanData] = []
+    var planIdArray: [String] = []
+    var countArray: [CountData] = []
+    var countIdArray: [String] = []
     
     //firebaseから取得したデータ格納用の配列
     var tempPlanArray:[PlanData] = []
     
     var arrayCount = 0
+    var updateArrayCount = 0
     
     //firestoreのデータ取得が実施済みか確認用の変数
     var loadedIndex:Int = 0
+    var countLoadedIndex: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,7 +63,6 @@ class PlanViewController: UIViewController, UITableViewDataSource, UITableViewDe
         backButton.layer.shadowOpacity = 1 //影の色の透明度
         backButton.layer.shadowRadius = 3 //影のぼかし
         backButton.layer.shadowOffset = CGSize(width: 2, height: 2)
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -76,14 +80,41 @@ class PlanViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 print("DEBUG_PRINT: snapshotの取得が失敗しました。 \(error)")
                 return
             } else if querySnapshot?.documents != nil && !querySnapshot!.documents.isEmpty {
+                //planDataを配列に格納
                 self.tempPlanArray = querySnapshot!.documents.map { document in
                 print("DEBUG_PRINT: document取得 \(document.documentID)")
                 let planData = PlanData(document: document)
                 self.loadedIndex += 1
                 return planData
                 }
+                //documentIdを配列に格納
+                self.planIdArray = querySnapshot!.documents.map { document in
+                    return document.documentID
+                }
             }
             self.tableView.reloadData()
+        }
+        
+        //countData更新用に既存のcountDataを取得
+        let countRef = Firestore.firestore().collection(Const.countPath)
+        
+        countRef.whereField("date", isGreaterThanOrEqualTo: startDate)
+            .whereField("date", isLessThanOrEqualTo: endDate)
+            .getDocuments { (querySnapshot, error) in
+                if let error = error {
+                    fatalError("\(error)")
+                } else if querySnapshot?.documents != nil && !querySnapshot!.documents.isEmpty {
+                    self.countArray = querySnapshot!.documents.map { document in
+                    print("DEBUG_PRINT: document取得 \(document.documentID)")
+                    let countData = CountData(document: document)
+                    self.countLoadedIndex += 1
+                    return countData
+                }
+                //documentIdを配列に格納
+                self.countIdArray = querySnapshot!.documents.map { document in
+                    return document.documentID
+                }
+            }
         }
     }
     
@@ -98,15 +129,14 @@ class PlanViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let date = Calendar.current.date(byAdding: .day, value: indexPath.row, to: selectDate!)!
         
         if loadedIndex > 0 {
-            
-            if tempPlanArray[arrayCount].date == date {
-                //planArray.append(tempPlanArray[arrayCount])
-                print(tempPlanArray[arrayCount])
-                cell.setPlanData(tempPlanArray[arrayCount])
-                arrayCount += 1
-            } else {
-                plan.date = date
-                cell.setPlanData(plan)
+            if arrayCount < tempPlanArray.count {
+                if tempPlanArray[arrayCount].date == date {
+                    cell.setPlanData(tempPlanArray[arrayCount])
+                    arrayCount += 1
+                } else {
+                    plan.date = date
+                    cell.setPlanData(plan)
+                }
             }
         } else {
             plan.date = date
@@ -120,6 +150,7 @@ class PlanViewController: UIViewController, UITableViewDataSource, UITableViewDe
     //決定ボタン押下時のメソッド
     @IBAction func handleRecordButton(_ sender: Any) {
         for i in 0...6{
+            
             //セルを取得してデータを格納
             let indexPath = IndexPath(row: i, section: 0)
             let cell = self.tableView.cellForRow(at: indexPath) as! PlanTableViewCell
@@ -138,10 +169,7 @@ class PlanViewController: UIViewController, UITableViewDataSource, UITableViewDe
             ] as [String : Any]
             
             //予定データの保存場所
-            let userRef = Firestore.firestore().collection(Const.userPath).document(uid!)
-            userRef.setData(["userName": name!])
             let planRef = Firestore.firestore().collection(Const.userPath).document(uid!).collection("items").document()
-            planRef.setData(planDic)
             
             //カウントデータ用の情報を取得
             var companyNum = 0
@@ -153,43 +181,65 @@ class PlanViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 homeNum = 1
             }
             
-            var count = CountData()
+            let count = CountData()
             let countDic = [
                 "date": planData.date!,
                 "companyCount": count.companyCount! + companyNum,
                 "homeCount": count.homeCount! + homeNum
             ] as [String : Any]
             
-            let countRef = Firestore.firestore().collection(Const.countPath)
+            let countRef = Firestore.firestore().collection(Const.countPath).document()
             
-            countRef.whereField("date", isEqualTo: planData.date!)
-                .getDocuments { (querySnapshot, error) in
-                    if let error = error {
-                        fatalError("\(error)")
-                    } else if querySnapshot?.documents != nil && !querySnapshot!.documents.isEmpty {
-                        count = CountData(document: querySnapshot!.documents[0])
-                        let formatter = DateFormatter()
-                        let date = planData.date!
-                        formatter.dateFormat = "yyyy/MM/dd"
-                        let dateString = formatter.string(from: date)
-                        
-                        let countSaveRef = Firestore.firestore().collection(Const.countPath).document(dateString)
-                        
-                        countSaveRef.updateData([
-                            "companyCout": count.companyCount! + companyNum,
-                            "homeCount": count.homeCount! + homeNum
-                        ])
-                        
-                    } else {
-                        let countSaveRef = Firestore.firestore().collection(Const.countPath).document()
-                        countSaveRef.setData(countDic)
+            //日毎に既存データがあれば更新、なければ新規登録
+            let date = Calendar.current.date(byAdding: .day, value: i, to: selectDate!)!
+            
+            if updateArrayCount < tempPlanArray.count {
+                if tempPlanArray.count > 0 && tempPlanArray[updateArrayCount].date == date {
+                    //planData更新
+                    let id = planIdArray[updateArrayCount]
+                    let planUpdateRef = Firestore.firestore().collection(Const.userPath).document(uid!).collection("items").document(id)
+                    planUpdateRef.updateData(planDic) { error in
+                        if let error = error {
+                            print("UPDATE_ERROR: \(error)")
+                        } else {
+                            print("Document Updated: \(id)")
+                        }
                     }
+                    
+                    //countDataは自分の過去分の登録内容と異なれば更新
+                    let countId = countIdArray[updateArrayCount]
+                    let countUpdateRef = Firestore.firestore().collection(Const.countPath).document(countId)
+                    let originalAttendance = tempPlanArray[updateArrayCount].attendance!
+                    
+                    if originalAttendance != planDic["attendance"] as! String {
+                        if originalAttendance == "出社" {
+                            //出社→在宅になった場合はcompanyCountを１減らし、homeCountを１増やす
+                            countUpdateRef.updateData(["companyCount": FieldValue.increment(Int64(-1))])
+                            countUpdateRef.updateData(["homeCount": FieldValue.increment(Int64(1))])
+                        } else if originalAttendance == "在宅" {
+                            //在宅→出社になった場合はcompanyCountを１増やし、homeCountを１減らす
+                            countUpdateRef.updateData(["companyCount": FieldValue.increment(Int64(1))])
+                            countUpdateRef.updateData(["homeCount": FieldValue.increment(Int64(-1))])
+                        }
+                        
+                    }
+                    
+                    updateArrayCount += 1
                 }
+                else {
+                    planRef.setData(planDic)
+                    countRef.setData(countDic)
+                }
+            } else {
+                planRef.setData(planDic)
+                countRef.setData(countDic)
+            }
             
-            //保存後画面を閉じる
-            self.dismiss(animated: true, completion: nil)
+            let userRef = Firestore.firestore().collection(Const.userPath).document(uid!)
+            userRef.setData(["userName": name!])
         }
-        
+        //保存後画面を閉じる
+        self.dismiss(animated: true, completion: nil)
     }
     
     //戻るボタン押下時

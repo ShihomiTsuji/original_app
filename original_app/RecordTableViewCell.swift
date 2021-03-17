@@ -41,8 +41,16 @@ class RecordTableViewCell: UITableViewCell {
         let dateString = formatter.string(from: date)
         self.dateLabel.text = dateString
         
+        if planData.attendance == "出社" {
+            self.segmentedControl.selectedSegmentIndex = 1
+        }
+        
         self.endTimePicker.date = planData.date!
         self.startTimePicker.date = planData.date!
+        
+        if planData.attendReason != nil {
+            self.reasonTextField.text = planData.attendReason!
+        }
         
         //顔マークの表示
         if planData.healthStatus! == "Good" {
@@ -71,7 +79,7 @@ class RecordTableViewCell: UITableViewCell {
     }
     
     //cellに入力されている内容を取得
-    func getPlanData() -> PlanData {
+    func getData() -> PlanData {
         //空のplanDataを作成
         let planData = PlanData()
         

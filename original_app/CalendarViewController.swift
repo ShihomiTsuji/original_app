@@ -14,6 +14,8 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
 
     var nextButton: UIButton!
     var backButton: UIButton!
+    var recordButton: UIButton!
+    let imgR = UIImage(named: "体温計のアイコン素材 3 (1)")!
     
     //カレンダーのsubtitleに表示する出社割合の配列
     var percentageArray:[Int] = []
@@ -22,6 +24,11 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     //firestoreのデータ取得が実施済みか確認用の変数
     var loadedIndex:Int = 0
     var arrayCount = 0
+    
+    //点マーク表示用
+    //firebaseから取得したデータ格納用の配列
+    var tempPlanArray:[PlanData] = []
+    var dotArrayCount = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,6 +52,13 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         self.view.addSubview(backButton)
         backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
         self.view.bringSubviewToFront(backButton)
+        
+        //実績登録画面に移動ボタンを配置
+        recordButton = UIButton(frame: CGRect(x: calendarFrame.maxX-130, y: calendarFrame.maxY-270, width: 50, height: 50))
+        self.recordButton.setImage(imgR, for: .normal)
+        self.view.addSubview(recordButton)
+        recordButton.addTarget(self, action: #selector(recordButtonTapped), for: .touchUpInside)
+        self.view.bringSubviewToFront(recordButton)
 
     }
     
@@ -89,6 +103,30 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
                 }
             self.calendar.reloadData()
             }
+        
+        //表示月のplanDataをfirebaseから取得
+        let uid = Auth.auth().currentUser?.uid
+        let planRef = Firestore.firestore().collection(Const.userPath).document(uid!).collection("items")
+        planRef.whereField("date", isGreaterThanOrEqualTo: startDate)
+            .whereField("date", isLessThanOrEqualTo: endDate)
+            .getDocuments() { (querySnapshot, error) in
+                if let error = error {
+                print("DEBUG_PRINT: snapshotの取得が失敗しました。 \(error)")
+                return
+            } else if querySnapshot?.documents != nil && !querySnapshot!.documents.isEmpty {
+                //planDataを配列に格納
+                self.tempPlanArray = querySnapshot!.documents.map { document in
+                print("DEBUG_PRINT: document取得 \(document.documentID)")
+                let planData = PlanData(document: document)
+                return planData
+                }
+                //documentIdを配列に格納
+                //self.planIdArray = querySnapshot!.documents.map { document in
+                //    return document.documentID
+                //}
+            }
+            self.calendar.reloadData()
+        }
     }
     
     //前月・翌月ボタン押下時の処理
@@ -108,6 +146,12 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         return  Calendar.current.date(byAdding: .month, value: -1, to:date)!
     }
     
+    //登録ボタン押下時の処理
+    @objc func recordButtonTapped(_sender: UIButton){
+        let recordViewController = self.storyboard?.instantiateViewController(withIdentifier: "Record") as! RecordViewController
+        self.present(recordViewController, animated: true, completion: nil)
+    }
+    
     //各日付に出社率を表示
     func calendar(_ calendar: FSCalendar, subtitleFor date: Date) -> String? {
         //表示している年月日取得
@@ -119,7 +163,6 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         components.year = currentYear
         components.month = currentMonth
         
-        let calendar2 = Calendar(identifier: .gregorian)
         let cal = Calendar.current.range(of: Calendar.Component.day, in: Calendar.Component.month, for: self.calendar.currentPage)!
         
         if loadedIndex > 0 {
@@ -142,6 +185,20 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
             }
         } else {
             return ""
+        }
+    }
+    
+    //予定入力済みの日に点マークを表示
+    func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int{
+        if dotArrayCount < tempPlanArray.count && tempPlanArray.count > 0 {
+            if tempPlanArray[dotArrayCount].date! == date {
+                dotArrayCount += 1
+                return 1 //ここに入る数字によって点の数が変わる
+            } else {
+                return 0
+            }
+        } else {
+        return  1
         }
     }
     

@@ -26,6 +26,8 @@
 		524EDD3E25E0D75C005D210B /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524EDD3D25E0D75C005D210B /* LoginViewController.swift */; };
 		524EDD4225E0DA56005D210B /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524EDD4125E0DA56005D210B /* TabBarController.swift */; };
 		5257B43025F9CB9A00C5BA5D /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5257B42F25F9CB9A00C5BA5D /* SettingViewController.swift */; };
+		52955B5C26021ED200B53B34 /* DetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52955B5A26021ED200B53B34 /* DetailTableViewCell.swift */; };
+		52955B5D26021ED200B53B34 /* DetailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52955B5B26021ED200B53B34 /* DetailTableViewCell.xib */; };
 		52F5B4E725F304D000655136 /* CountData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52F5B4E625F304CF00655136 /* CountData.swift */; };
 		647471D5870C3055DDE698DA /* Pods_original_app.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F96EBFCA46DC450ED892D98 /* Pods_original_app.framework */; };
 /* End PBXBuildFile section */
@@ -54,6 +56,8 @@
 		524EDD3D25E0D75C005D210B /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		524EDD4125E0DA56005D210B /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		5257B42F25F9CB9A00C5BA5D /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
+		52955B5A26021ED200B53B34 /* DetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTableViewCell.swift; sourceTree = "<group>"; };
+		52955B5B26021ED200B53B34 /* DetailTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailTableViewCell.xib; sourceTree = "<group>"; };
 		52F5B4E625F304CF00655136 /* CountData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountData.swift; sourceTree = "<group>"; };
 		8CC0688EDC46F700929A9AB9 /* Pods-original_app.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-original_app.release.xcconfig"; path = "Target Support Files/Pods-original_app/Pods-original_app.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -116,8 +120,10 @@
 				524EDCD225D4C6A0005D210B /* CalendarViewController.swift */,
 				5257B42F25F9CB9A00C5BA5D /* SettingViewController.swift */,
 				524EDCD825D4E4D1005D210B /* DetailViewController.swift */,
-				524EDCF825D5647B005D210B /* RecordTableViewCell.swift */,
+				52955B5A26021ED200B53B34 /* DetailTableViewCell.swift */,
+				52955B5B26021ED200B53B34 /* DetailTableViewCell.xib */,
 				524EDD3A25E0AF49005D210B /* RecordViewController.swift */,
+				524EDCF825D5647B005D210B /* RecordTableViewCell.swift */,
 				524EDCF925D5647B005D210B /* RecordTableViewCell.xib */,
 				524EDCF525D523CB005D210B /* PlanViewController.swift */,
 				524EDD3225D97342005D210B /* PlanTableViewCell.swift */,
@@ -197,6 +203,7 @@
 				524EDD0125D82486005D210B /* GoogleService-Info.plist in Resources */,
 				524EDCFB25D5647B005D210B /* RecordTableViewCell.xib in Resources */,
 				524EDD3525D97342005D210B /* PlanTableViewCell.xib in Resources */,
+				52955B5D26021ED200B53B34 /* DetailTableViewCell.xib in Resources */,
 				524EDCC125D3D76B005D210B /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -253,6 +260,7 @@
 				524EDD3E25E0D75C005D210B /* LoginViewController.swift in Sources */,
 				524EDCD325D4C6A0005D210B /* CalendarViewController.swift in Sources */,
 				524EDCFA25D5647B005D210B /* RecordTableViewCell.swift in Sources */,
+				52955B5C26021ED200B53B34 /* DetailTableViewCell.swift in Sources */,
 				524EDCD925D4E4D1005D210B /* DetailViewController.swift in Sources */,
 				524EDCBA25D3D76B005D210B /* AppDelegate.swift in Sources */,
 				5257B43025F9CB9A00C5BA5D /* SettingViewController.swift in Sources */,

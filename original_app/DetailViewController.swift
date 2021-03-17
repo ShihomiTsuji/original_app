@@ -14,13 +14,18 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var backButton: UIButton!
     
+    let img0 = UIImage(named:"img00")!
+    let img1 = UIImage(named:"img1")!
+    let img2 = UIImage(named:"img2")!
+    
     var selectDate: Date!
     
-    var members = [String]()
+    //var members = [String]()
     var header = [String]()
     var member = [[PlanData]]()
     var planArray: [PlanData] = []
     var planData: PlanData = PlanData()
+    var loadedIndex = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,35 +46,34 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         memberRef.getDocuments() { (querySnapshot, error) in
             if let error = error {
                 print(error.localizedDescription)
-            } else {
+            } else if querySnapshot?.documents != nil && !querySnapshot!.documents.isEmpty  {
                 for document in querySnapshot!.documents {
                     let name = document.documentID
                     print(name)
-                    self.members.append(document.documentID)
+                    //self.members.append(document.documentID)
+                    //membersに格納されている社員の選択日の勤務予定を取得し、memberに格納
+                    //for userId in members { //userIdがnameになる
+                    let planRef = Firestore.firestore().collection(Const.userPath).document("\(name)").collection("items")
+                        
+                    planRef.whereField("date", isEqualTo: self.selectDate!)
+                        .getDocuments { (querySnapshot, error) in
+                            if let error = error {
+                                fatalError("\(error)")
+                            } else if querySnapshot?.documents != nil && !querySnapshot!.documents.isEmpty  {
+                                self.planData = PlanData(document: querySnapshot!.documents[0])
+                                if self.planData.attendance == "出社" {
+                                    self.member[0].append(self.planData)
+                                } else if self.planData.attendance == "在宅"{
+                                    self.member[1].append(self.planData)
+                                }
+                            self.loadedIndex += 1
+                            }
+                            self.tableView.reloadData()
+                        }
                 }
             }
-        }
-        
-        //membersに格納されている社員の選択日の勤務予定を取得し、memberに格納
-        for userId in members {
-            let planRef = Firestore.firestore().collection(Const.userPath).document("\(userId)").collection("items")
             
-            planRef.whereField("date", isEqualTo: selectDate!)
-                   .getDocuments { (querySnapshot, error) in
-                if let error = error {
-                    fatalError("\(error)")
-                } else if querySnapshot?.documents != nil {
-                    self.planData = PlanData(document: querySnapshot!.documents[0])
-                    }
-                }
-            if planData.attendance == "出社" {
-                member[0].append(planData)
-            } else if planData.attendance == "在宅"{
-                member[1].append(planData)
-            }
-            self.tableView.reloadData()
         }
-        
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -90,7 +94,6 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         backButton.layer.shadowOpacity = 1 //影の色の透明度
         backButton.layer.shadowRadius = 3 //影のぼかし
         backButton.layer.shadowOffset = CGSize(width: 2, height: 2) //影の方向　width、heightを負の値にすると上の方に影が表示される
-
         
         //日付表示
         let formatter = DateFormatter()
@@ -118,21 +121,31 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
     //各セクションのセル
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        
-        //名前表示
         let nameLabel = cell.viewWithTag(1) as! UILabel
-        nameLabel.text = (member[indexPath.section][indexPath.row].name)
+        let healthButton = cell.viewWithTag(3) as! UIButton
         
-        //出社時間表示
-        let timeLabel = cell.viewWithTag(2) as! UILabel
-        let formatter = DateFormatter()
-        let startTimeStr = formatter.string(from: member[indexPath.section][indexPath.row].startTime!)
-        let endTimeStr = formatter.string(from: member[indexPath.section][indexPath.row].endTime!)
-        timeLabel.text = (startTimeStr + "→" + endTimeStr)
-        
-        //体調表示
-        //let healthLabel = cell.viewWithTag(3) as! UILabel
-        //if member[indexPath.section][indexPath.row].
+        if loadedIndex > 0 {
+            //名前表示
+            nameLabel.text = (member[indexPath.section][indexPath.row].name)
+            
+            /*//出社時間表示
+            let timeLabel = cell.viewWithTag(2) as! UILabel
+            let formatter = DateFormatter()
+            let startTimeStr = formatter.string(from: member[indexPath.section][indexPath.row].startTime!)
+            let endTimeStr = formatter.string(from: member[indexPath.section][indexPath.row].endTime!)
+            timeLabel.text = "\(startTimeStr)" + "→" + "\(endTimeStr)"*/
+            
+            //体調表示
+            if member[indexPath.section][indexPath.row].healthStatus == "Good"{
+                healthButton.setImage(img1, for: .normal)
+            } else if member[indexPath.section][indexPath.row].healthStatus == "Bad"{
+                healthButton.setImage(img2, for: .normal)
+            } else {
+                healthButton.setImage(img0, for: .normal)
+            }
+        } else {
+        nameLabel.text = "登録なし"
+        }
         
         return cell
     }
@@ -144,14 +157,14 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     // セクションの背景とテキストの色を変更する
-        func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-            // 背景色を変更する
-            view.tintColor = UIColor(red: 0.97, green: 0.64, blue: 0.56, alpha: 1.0)
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        // 背景色を変更する
+        view.tintColor = UIColor(red: 0.97, green: 0.64, blue: 0.56, alpha: 1.0)
 
-            let header = view as! UITableViewHeaderFooterView
-            // テキスト色を変更する
-            header.textLabel?.textColor = UIColor(red: 0.22, green: 0.22, blue: 0.22, alpha: 1.0)
-        }
+        let header = view as! UITableViewHeaderFooterView
+        // テキスト色を変更する
+        header.textLabel?.textColor = UIColor(red: 0.22, green: 0.22, blue: 0.22, alpha: 1.0)
+    }
     
     //戻るボタン押下時
     @IBAction func backTapped(_ sender: Any) {
